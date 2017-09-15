@@ -1,5 +1,5 @@
 # AutoGrading
-AutoGrading project for RCOS \n
+AutoGrading project for RCOS
 Author: Huiming Cheng
 Programming Language used: Python and (possibly) c++
 Used Library: OpenCV
