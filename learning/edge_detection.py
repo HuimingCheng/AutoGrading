@@ -6,7 +6,8 @@ image = cv2.imread("image/gameboy.jpg")
 # convert image to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # blur the image slightly to remove noise.
-gray = cv2.bilateralFilter(gray, 11, 17, 17)
+gray = cv2.bilateralFilter(gray, 11, 17, 17) 
+#gray = cv2.GaussianBlur(gray, (5, 5), 0) is an alternative way to blur the image
 # canny edge detection
 edged = cv2.Canny(gray, 30, 200)
 
