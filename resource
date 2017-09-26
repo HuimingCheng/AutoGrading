@@ -1,1 +1,0 @@
-this is resource file
