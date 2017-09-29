@@ -38,6 +38,7 @@ for c in cnts:
 	# we can assume that we have found our screen
 	if len(approx) == 4:
 		screenCnt = approx
+		break
 
 # the print is for test		
 print screenCnt[0][0]
