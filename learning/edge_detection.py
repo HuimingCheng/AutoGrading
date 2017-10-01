@@ -31,11 +31,14 @@ screenCnt = None
 for c in cnts:
 	# approximate the contour
 	peri = cv2.arcLength(c, True)
+	#This function gives the number of vertices of the figure
+	#For example, approx returns 4 if the shape is rectangle and 5 if the shape is pentagon
 	approx = cv2.approxPolyDP(c, 0.02 * peri, True) 
 	# if our approximated contour has four points, then
 	# we can assume that we have found our screen
 	if len(approx) == 4:
 		screenCnt = approx
+		break
 
 # the print is for test		
 print screenCnt[0][0]
