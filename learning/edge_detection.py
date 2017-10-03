@@ -9,6 +9,8 @@ gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray = cv2.bilateralFilter(gray, 11, 17, 17)
 # canny edge detection
 edged = cv2.Canny(gray, 30, 200)
+cv2.imshow("edged", edged)
+
 
 # find contours in the edged image, keep only the largest ones, and initialize 
 # our screen contour
@@ -25,7 +27,6 @@ edged = cv2.Canny(gray, 30, 200)
 cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:10]
 # initialize the screenCnt.
 screenCnt = None
-
 # loop over our contours
 for c in cnts:
 	# approximate the contour
@@ -35,6 +36,7 @@ for c in cnts:
 	# we can assume that we have found our screen
 	if len(approx) == 4:
 		screenCnt = approx
+		
 
 # the print is for test		
 print screenCnt[0][0]
