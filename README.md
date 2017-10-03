@@ -1,6 +1,6 @@
 # AutoGrading
 AutoGrading project for RCOS
-Author: Huiming Cheng
-Programming Language used: Python and (possibly) c++
+Author: Huiming Cheng, Rujie Geng, Pengqin Wu, Yirong Cai.
+Programming Language used: Python, c++, html and css.
 Used Library: OpenCV
 Start date:September 15th
