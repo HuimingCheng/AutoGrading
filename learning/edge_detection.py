@@ -79,6 +79,7 @@ edged = cv2.Canny(gray, 30, 200)
 # between contours
 # Third parameter: compress the contours to save space using cv2.CV_CHAIN_APPROX_SIMPLE
 (_,cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+#(cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 #the number of returned parameter is different depending on the version of openCV
 #for 2.x it is (cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 #for 3.x it is (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
