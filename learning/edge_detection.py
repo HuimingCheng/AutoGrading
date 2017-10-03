@@ -110,6 +110,11 @@ cv2.imshow("Game Boy Screen", image)
 # apply the four point transform to obtain a top-down
 # view of the original image
 warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
+warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
+warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+ret,thresh1 = cv2.threshold(warped,70,100,cv2.THRESH_BINARY)
+cv2.imshow("Binary",thresh1 )
+warped = warped.astype("uint8") * 255
 cv2.waitKey(100000)
 
 
