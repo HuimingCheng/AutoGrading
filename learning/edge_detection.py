@@ -77,8 +77,10 @@ edged = cv2.Canny(gray, 30, 200)
 # Second parameter: cv2.RETR_TREE tells OpenCV to compute the hierarchy (relationship) 
 # between contours
 # Third parameter: compress the contours to save space using cv2.CV_CHAIN_APPROX_SIMPLE
-(cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
+(_,cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+#the number of returned parameter is different depending on the version of openCV
+#for 2.x it is (cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+#for 3.x it is (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 # sort the counter. The reference is the countourArea. And we only get largest 10 
 # countour.
 cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:10]
