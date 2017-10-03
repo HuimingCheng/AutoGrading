@@ -46,6 +46,9 @@ print screenCnt[0][0]
 # to draw the contours in the original image.
 cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
 cv2.imshow("Game Boy Screen", image)
+# apply the four point transform to obtain a top-down
+# view of the original image
+warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 cv2.waitKey(100000)
 
 
