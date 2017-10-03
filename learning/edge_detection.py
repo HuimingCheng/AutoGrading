@@ -60,7 +60,8 @@ def four_point_transform(image, pts):
 	# return the warped image
 	return warped
 image = cv2.imread("image/gameboy.jpg")
-
+ratio = image.shape[0] / 500.0
+orig = image.copy()
 # convert image to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # blur the image slightly to remove noise.
