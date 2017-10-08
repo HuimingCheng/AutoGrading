@@ -69,6 +69,8 @@ gray = cv2.bilateralFilter(gray, 11, 17, 17)
 #gray = cv2.GaussianBlur(gray, (5, 5), 0) is an alternative way to blur the image
 # canny edge detection
 edged = cv2.Canny(gray, 30, 200)
+#There's another way of thresholding which is more precise than the original method we used.
+#thresh1= cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
 
 # find contours in the edged image, keep only the largest ones, and initialize 
 # our screen contour
