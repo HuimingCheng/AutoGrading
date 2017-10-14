@@ -281,10 +281,12 @@ if __name__ == '__main__':
 	# view of the original image
 
 	warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
-	warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 	warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
-	ret,thresh1 = cv2.threshold(warped,80,85,cv2.THRESH_BINARY)
-	cv2.imshow("Binary",thresh1 )
+	
+	#Theses are code for normal method of thresholding, we've decided not to use them
+	#because the adaptive thresholding gives much better resulting picture
+	#ret,thresh1 = cv2.threshold(warped,80,85,cv2.THRESH_BINARY)
+	#cv2.imshow("Binary",thresh1 )
 	warped = warped.astype("uint8") * 255
 	cv2.waitKey(10000)
 
