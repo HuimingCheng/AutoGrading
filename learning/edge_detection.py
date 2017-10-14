@@ -1,5 +1,12 @@
 import cv2
 import numpy as np 
+#The "crop and stretch" functions
+#One approach we are thinking about is to first scan a blank answer sheet
+#to determine the locations of all the squares on the paper
+#we need this because we found that sometimes the student's answer cause the program
+#to misdetect the answer area and some contours are left out 
+#We may use the coordinate of all the answer areas we find on the blank answer sheet as a standard
+#and use those coordinates to detect all the answers in the actual student answer sheet
 def order_points(pts):
 	# initialzie a list of coordinates that will be ordered
 	# such that the first entry in the list is the top-left,
