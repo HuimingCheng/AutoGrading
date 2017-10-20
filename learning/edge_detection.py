@@ -318,6 +318,7 @@ def find_answer2(answer_list,number_of_choice,thresh1,pixel=40, number_of_questi
 if __name__ == '__main__':
 
     image = cv2.imread("image/IB_answer_sheet7.png")
+    print type(image)
 
     # ratio = 1000.0 / image.shape[1]
     # # new dimension for image
