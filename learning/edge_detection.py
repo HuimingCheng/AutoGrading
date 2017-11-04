@@ -1,5 +1,6 @@
-#This program gives out partial detected contours for the final answer area
-#We need to add more functions to detect answers and center
+#This is a program that handles the actual image processing and 
+#answer detection. We are going to build mobile apps based on this
+#program and hopefully we will be able to add more functionality to it.
 import cv2
 import numpy as np
 def rectify(h):
