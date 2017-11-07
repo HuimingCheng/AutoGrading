@@ -1,0 +1,13 @@
+So far there are a couple of different options to build what we have into an Android app. 
+1. Use python library to directly export our current code into an apk
+Examples: Qpython,SL4A,kivy
+Advantages: Easy to accomplish,
+Possible drawbacks: Python is not the best programming language for Android app development and there might be bugs in the exported app
+The UI design might also be a problem
+2. Use Java and Android Studio to re-write the whole program again
+Advantages: More customization capabilities and less likely to have bugs
+Drawbacks: Takes more time to learn and Java may not have as many libraries as python so there might be inconvenience implementing what 
+we have now. 
+Possible fix: Most of the image processing we've done are accomplished by our own functions and only a small portion of the code depends
+on openCV on python. OpenCV also supports Java so if I'm able to learn the syntax of Java quickly I think I can finish the project with a
+reasonable amount of time.
