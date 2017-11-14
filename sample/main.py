@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import cv2
 import numpy as np
 import sys
+import Tkinter
 
 def rectify(h):
     h = h.reshape((4,2))
@@ -478,12 +480,12 @@ def grade_answer(correct_answer,answer):
 
 
 def grading(image1, answer_file_name):
-    '''
+    
 
-    image = cv2.imread("upload/Answer_sheet.png")
-    cv2.imwrite("original.png", image)
+    image = cv2.imread("/Users/gengruijie/Desktop/未命名文件夹/OneDrive/学习/cs/课外/Github/AutoGrading/sample/static/upload")
+    # cv2.imwrite("original.png", image)
 
-    ratio = image.shape[0] / 500.0
+    # ratio = image.shape[0] / 500.0
     #orig = image.copy()
     res = cv2.resize(image,None,fx=0.4, fy=0.4, interpolation = cv2.INTER_LANCZOS4)
     # res = cv2.resize(image, dst, interpolation=CV_INTER_LINEAR)
@@ -498,8 +500,12 @@ def grading(image1, answer_file_name):
     # The first one is normal threshold method
     # The second one is use Gaussian method which has better effect.
     # ret,thresh1 = cv2.threshold(gray,150,150,cv2.THRESH_BINARY)
-    cv2.imshow("Outline", res)
-    cv2.imwrite("res.png", res)
+    
+    # ===================================================================================
+    # test for upload in front end.
+    # ===================================================================================
+    # cv2.imshow("Outline", res)
+    # cv2.imwrite("res.png", res)
 
     # thresh1= cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
     try:
@@ -517,8 +523,12 @@ def grading(image1, answer_file_name):
             screenCnt = approx
             break
     cv2.drawContours(res, [screenCnt], -1, (0, 255, 0), 2)
-    cv2.imshow("Contours",res)
-    cv2.imwrite("res2.png", res)
+
+    # ===================================================================================
+    # test for upload in front end.
+    # ===================================================================================
+    # cv2.imshow("Contours",res)
+    # cv2.imwrite("res2.png", res)
 
     #warped = four_point_transform(res, screenCnt.reshape(4, 2) * ratio)
     lel = rectify(screenCnt)
@@ -544,12 +554,12 @@ def grading(image1, answer_file_name):
     cv2.imshow("Answer area",crop_img)
     cv2.waitKey(15000)
     image = crop_img
-'''
+
     # above is created by Huiming
 
     name = "static/upload/" + image1
     image = cv2.imread(name)
-    f = open("static/upload/"+answer_file_name)
+    f = open(answer_file_name)
     correct_answer = f.read()
 
     image = cv2.resize(image,None,fx=2, fy=2, interpolation = cv2.INTER_LANCZOS4)
@@ -747,8 +757,27 @@ def grading(image1, answer_file_name):
     '''
 
 if __name__ == '__main__':
-    image_file = "wrap.png"
-    answer_file = "answer.txt"
+    reload(sys)
+    sys.setdefaultencoding("UTF8")
+
+    try:
+        import tkFileDialog as tfd
+    except ImportError:
+        from tkinter import filedialog as tfd
+
+
+    root = Tkinter.Tk()
+    root.withdraw()
+    print "Please upload answer"
+    answer_file = tfd.askopenfilename()
+
+    print "Please upload answer sheet"
+    image_file = tfd.askopenfilename()
+    # print filename
+    # folder = os.getcwd()
+    # image_file = folder + '/static/upload/answer.txt'
+    # f = open(folder + '/static/upload/answer.txt','w')    image_file = "wrap.png"
+    # answer_file = "answer.txt"
 
     answer = grading(image_file, answer_file)
     # print "This is the output of the main function ", answer
