@@ -1,28 +1,32 @@
 import sys
-
+from copy import *
 import numpy as np
 import cv2
 
-im = cv2.imread("IwQY6.png")
-im3 = im.copy()
+im = cv2.imread("WechatIMG448.jpeg")
+im = cv2.resize(im, None,fx = 0.4, fy = 0.4, interpolation = cv2.INTER_LINEAR)
+
 
 gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
 blur = cv2.GaussianBlur(gray,(5,5),0)
-thresh = cv2.adaptiveThreshold(blur,255,1,1,11,2)
+thresh = cv2.adaptiveThreshold(blur,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,6)
 
 #################      Now finding Contours         ###################
 
-contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+image,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+cv2.drawContours(im, contours, -1, (0, 0, 255),1)
+cv2.imshow("window title", im)
+cv2.waitKey(0)
 
 samples =  np.empty((0,100))
 responses = []
 keys = [i for i in range(48,58)]
 
 for cnt in contours:
-    if cv2.contourArea(cnt)>50:
+    if cv2.contourArea(cnt)>10:
         [x,y,w,h] = cv2.boundingRect(cnt)
 
-        if  h>28:
+        if  h>10:
             cv2.rectangle(im,(x,y),(x+w,y+h),(0,0,255),2)
             roi = thresh[y:y+h,x:x+w]
             roismall = cv2.resize(roi,(10,10))
@@ -40,5 +44,5 @@ responses = np.array(responses,np.float32)
 responses = responses.reshape((responses.size,1))
 print "training complete"
 
-np.savetxt('generalsamples.data',samples)
-np.savetxt('generalresponses.data',responses)
+np.savetxt("generalsamples.data",samples)
+np.savetxt("generalresponses.data",responses)
