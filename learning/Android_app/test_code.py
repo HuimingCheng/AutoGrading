@@ -2,7 +2,8 @@
 #answer detection. We are going to build mobile apps based on this
 #program and hopefully we will be able to add more functionality to it.
 import cv2
-import android
+from android import Android
+droid = Android()
 import numpy as np
 def rectify(h):
     h = h.reshape((4,2))
