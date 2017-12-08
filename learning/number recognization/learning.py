@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 #######   training part    ############### 
-samples = np.loadtxt('generalsamples.data',np.float32)
-responses = np.loadtxt('generalresponses.data',np.float32)
+samples = np.loadtxt('generalsamples.txt',np.float32)
+responses = np.loadtxt('generalresponses.txt',np.float32)
 responses = responses.reshape((responses.size,1))
 
 model = cv2.ml.KNearest_create()
