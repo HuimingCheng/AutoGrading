@@ -1,21 +1,31 @@
 # -*- coding: utf-8 -*-
 import cv2
 import numpy as np
+# import matplotlib.pyplot as plt
+import math
+
+
+from Box import Box
+from AnswerSheet import AnswerSheet
 import sys
-import Tkinter
+# import Tkinter
+import tkinter
+from importlib import reload
+
 
 def rectify(h):
-    h = h.reshape((4,2))
-    hnew = np.zeros((4,2),dtype = np.float32)
+    h = h.reshape((4, 2))
+    hnew = np.zeros((4, 2), dtype=np.float32)
     add = h.sum(1)
     hnew[0] = h[np.argmin(add)]
     hnew[2] = h[np.argmax(add)]
 
-    diff = np.diff(h,axis = 1)
+    diff = np.diff(h, axis=1)
     hnew[1] = h[np.argmin(diff)]
     hnew[3] = h[np.argmax(diff)]
 
     return hnew
+
 
 def order_points(pts):
     # initialzie a list of coordinates that will be ordered
@@ -113,7 +123,7 @@ def find_centre(cnts):
         # print "The centre of this rectangle is (%d,%d)" %(x_centre, y_centre)
         if (check_include(centre_list, x_centre, y_centre)):
             centre_list.append((x_centre, y_centre))
-        # print "The centre of this rectangle is (%d,%d)" %(x_centre, y_centre)
+            # print "The centre of this rectangle is (%d,%d)" %(x_centre, y_centre)
     return centre_list
 
 
@@ -275,7 +285,8 @@ def find_missing_rectangle(centre_list, centre_list_col, x_uncertainty, y_uncert
                     break
     return total_list_copy
 
-def seperate_by_row(centre_list_col,y_uncertainty):
+
+def seperate_by_row(centre_list_col, y_uncertainty):
     row_list = []
     total_list = []
     # print centre_list_col
@@ -302,16 +313,16 @@ def seperate_by_row(centre_list_col,y_uncertainty):
     return total_list
 
 
-def seperate_big_column(image,centre_list,image_width,column_number):
+def seperate_big_column(image, centre_list, image_width, column_number):
     col_list = []
     for i in range(column_number):
         col_list.append([])
 
     for point in centre_list:
         for i in range(column_number):
-            lower_bound = i*image_width / column_number
-            upper_bound = (i+1)*image_width / column_number
-            if lower_bound < point[0]<upper_bound:
+            lower_bound = i * image_width / column_number
+            upper_bound = (i + 1) * image_width / column_number
+            if lower_bound < point[0] < upper_bound:
                 # if (check_include(col_list[i], point[0], point[1])):
                 col_list[i].append(point)
                 break
@@ -320,32 +331,32 @@ def seperate_big_column(image,centre_list,image_width,column_number):
     return col_list
 
 
-def find_missing_rectangle_stronger(image,centre_list, centre_list_col, x_uncertainty, y_uncertainty, image_width):
-    large_col_list = seperate_big_column(image,centre_list,image_width,column_number=3)
+def find_missing_rectangle_stronger(image, centre_list, centre_list_col, x_uncertainty, y_uncertainty, image_width):
+    large_col_list = seperate_big_column(image, centre_list, image_width, column_number=3)
     for col_list in large_col_list:
-        x_min,y_min = col_list[0][0],col_list[0][1]
-        x_max,y_max = 0 , 0
+        x_min, y_min = col_list[0][0], col_list[0][1]
+        x_max, y_max = 0, 0
         for point in col_list:
-            x_min = min(x_min,point[0])
-            x_max = max(x_max,point[0])
-            y_min = min(y_min,point[1])
-            y_max = max(y_max,point[1])
+            x_min = min(x_min, point[0])
+            x_max = max(x_max, point[0])
+            y_min = min(y_min, point[1])
+            y_max = max(y_max, point[1])
         x_base, y_base = x_min, y_min
-        x_distance = (x_max-x_min) / 3 # 3 is coming from 4 choice
-        check = False    # to stop the out layer while loop.
-        while(y_base <= y_max+(y_uncertainty)):
+        x_distance = (x_max - x_min) / 3  # 3 is coming from 4 choice
+        check = False  # to stop the out layer while loop.
+        while (y_base <= y_max + (y_uncertainty)):
             y_total = 0
             y_count = 0
-            while(x_base <= (x_max+x_uncertainty)):
+            while (x_base <= (x_max + x_uncertainty)):
                 if (check_include(centre_list, x_base, y_base)):
-                    cv2.circle(image,(x_base,y_base),20,(0,0,0))
+                    cv2.circle(image, (x_base, y_base), 20, (0, 0, 0))
 
-                    centre_list.append((x_base,y_base))
+                    centre_list.append((x_base, y_base))
                 x_base += x_distance
             x_base = x_min  # renew the x_base
             # find the next y_base
             for point in centre_list:
-                if(y_base+3*y_uncertainty) > point[1] > (y_base+1*y_uncertainty) :
+                if (y_base + 3 * y_uncertainty) > point[1] > (y_base + 1 * y_uncertainty):
                     y_total += point[1]
                     y_count += 1
 
@@ -355,12 +366,12 @@ def find_missing_rectangle_stronger(image,centre_list, centre_list_col, x_uncert
             y_base = y_total / y_count
 
 
-        # print "Leng Leng Leng of centre_list " ,len(centre_list)
+            # print "Leng Leng Leng of centre_list " ,len(centre_list)
 
     return centre_list
 
-        # cv2.circle(image,(x_min,y_min),20,(0,0,0))
-        # cv2.circle(image,(x_max,y_max),20,(0,0,0))
+    # cv2.circle(image,(x_min,y_min),20,(0,0,0))
+    # cv2.circle(image,(x_max,y_max),20,(0,0,0))
     # cv2.imshow("test", image)
     # cv2.waitKey(20000)
 
@@ -369,15 +380,12 @@ def find_missing_rectangle_stronger(image,centre_list, centre_list_col, x_uncert
     # cv2.imshow("Game Boy Screen", image)
 
 
-
-
-
 # answer_list is a list. It contains x elements, x is rows of the answer sheet. It is also list
 # every row_list contains also list which are centre points of rectangle.
-def find_answer2(answer_list,number_of_choice,thresh1,pixel=40, number_of_question=40):
-    column = len(answer_list[0])/number_of_choice
+def find_answer2(answer_list, number_of_choice, thresh1, pixel=40, number_of_question=40):
+    column = len(answer_list[0]) / number_of_choice
     # print len(answer_list[0])
-    assert(column == 3)
+    assert (column == 3)
     answer = []
 
     number_of_question = 0
@@ -385,16 +393,16 @@ def find_answer2(answer_list,number_of_choice,thresh1,pixel=40, number_of_questi
     boundary = 1532000
     for i in range(column):
         # print number_of_question
-        if number_of_answer==40:
+        if number_of_answer == 40:
             break
         for j in range(len(answer_list)):
             number_of_answer = 0
-            while(True):
+            while (True):
                 # print number_of_question
                 # print boundary
                 # print number_of_answer
                 # print "i j k" , i ,j
-                for k in range(i*4,i*4+number_of_choice):
+                for k in range(i * 4, i * 4 + number_of_choice):
                     point = answer_list[j][k]
                     px = 0
                     x_start, x_end = point[0] - pixel, point[0] + pixel
@@ -409,34 +417,35 @@ def find_answer2(answer_list,number_of_choice,thresh1,pixel=40, number_of_questi
                     # print px
                     if px < boundary:
                         # cv2.circle(thresh1, (x - pixel, y - pixel), 40, (0, 0, 0))
-                        number_of_answer += 1 
+                        number_of_answer += 1
                         choice = str(k)
                 # print number_of_answer
                 if number_of_answer == 1:
                     number_of_question += 1
 
-                    cv2.circle(thresh1,(answer_list[j][int(choice)]),20,(0,255,0),8)
+                    cv2.circle(thresh1, (answer_list[j][int(choice)]), 20, (0, 255, 0), 8)
 
                     answer.append(choice)
                     break
-                if number_of_question==40:
+                if number_of_question == 40:
                     break
                 if number_of_answer == 0:
                     boundary = boundary * (1.005)
                     number_of_answer = 0
-                else: 
+                else:
                     boundary = boundary / 1.01
                     number_of_answer = 0
-            if number_of_question==40:
+            if number_of_question == 40:
                 break
 
-        if number_of_question==40:
+        if number_of_question == 40:
             break
     # print thresh1
     # cv2.imwrite("test123.png",thresh1)
     # cv2.waitKey(10000)
 
-    return answer 
+    return answer
+
 
 # answers is a string contains all of choice of student
 # number_of_choice is a integer contains the choice of this paper
@@ -445,31 +454,32 @@ def change_num_into_choice(answers, num_of_choice):
     # this is return value
     new_answer = ""
     for answer in answers:
-        # the answer is the column number of the answer sheet. 
+        # the answer is the column number of the answer sheet.
         # so first mod the number of choice to get 0~3
-        answer = str(int(answer) % num_of_choice )
-        answer = ord(answer)    # get the ascii number of answer
-        answer += 17            # 17 is difference from 0 to A, 1 to B, 2 to C, 3 to D
-        answer = chr(answer)    # to change the ascii number into char.
-        new_answer += answer 
+        answer = str(int(answer) % num_of_choice)
+        answer = ord(answer)  # get the ascii number of answer
+        answer += 17  # 17 is difference from 0 to A, 1 to B, 2 to C, 3 to D
+        answer = chr(answer)  # to change the ascii number into char.
+        new_answer += answer
     return new_answer
 
-def grade_answer(correct_answer,answer):
+
+def grade_answer(correct_answer, answer):
     temp = ""
     result = []
     for letter in correct_answer:
-        if letter.isalpha()==True :
+        if letter.isalpha() == True:
             temp += letter
     correct_answer = temp
     # print len(correct_answer)
     # print len(answer)
     if len(correct_answer) != len(answer):
-        print "The number of answer is inconsistent with correct answer."
+        # print "The number of answer is inconsistent with correct answer."
         return None
     for i in range(len(answer)):
         temp = []
         if answer[i] != correct_answer[i]:
-            temp.append(i+1)
+            temp.append(i + 1)
             temp.append(answer[i])
             temp.append(correct_answer[i])
             # temp += (answer[i] + correct_answer[i])
@@ -477,94 +487,141 @@ def grade_answer(correct_answer,answer):
     return result
 
 
-
-
 def grading(image1, answer_file_name):
-    
+    image = cv2.imread(
+        "/Users/gengruijie/Desktop/未命名文件夹/OneDrive/学习/cs/课外/Github/AutoGrading/sample/static/upload/Answer_sheet.png")
 
-    image = cv2.imread("/Users/gengruijie/Desktop/未命名文件夹/OneDrive/学习/cs/课外/Github/AutoGrading/sample/static/upload")
-    # cv2.imwrite("original.png", image)
+    # the paper is almost 3000*2000
+    centerOfPaper = (image.shape[0]/2, image.shape[1]/2)
+    # now the centre is (x,y)
+    centerOfPaper = (centerOfPaper[1],centerOfPaper[0])
+    answerSheet = AnswerSheet(centerOfPaper)
 
-    # ratio = image.shape[0] / 500.0
-    #orig = image.copy()
-    res = cv2.resize(image,None,fx=0.4, fy=0.4, interpolation = cv2.INTER_LANCZOS4)
-    # res = cv2.resize(image, dst, interpolation=CV_INTER_LINEAR)
+    res = image
     # convert image to grayscale
     gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
     # blur the image slightly to remove noise.
-    #gray = cv2.bilateralFilter(gray, 11, 17, 17)
-    gray = cv2.GaussianBlur(gray, (5, 5), 0) #is an alternative way to blur the image
+    # gray = cv2.bilateralFilter(gray, 11, 17, 17)
+    gray = cv2.GaussianBlur(gray, (5, 5), 0)  # is an alternative way to blur the image
     # canny edge detection
     edged = cv2.Canny(gray, 30, 200)
-    # two threshold method. 
+    # two threshold method.
     # The first one is normal threshold method
     # The second one is use Gaussian method which has better effect.
-    # ret,thresh1 = cv2.threshold(gray,150,150,cv2.THRESH_BINARY)
-    
-    # ===================================================================================
-    # test for upload in front end.
-    # ===================================================================================
-    # cv2.imshow("Outline", res)
-    # cv2.imwrite("res.png", res)
+    ret,thresh1 = cv2.threshold(gray,150,150,cv2.THRESH_BINARY)
 
-    # thresh1= cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
     try:
-        (cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        (cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     except:
-        (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    # (_, cnts, _) =cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = sorted(cnts, key = cv2.contourArea,reverse=True)[:10]
+    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:200]
+
+    listOfContourObject = []
     for c in cnts:
-        # approximate the contour
-        peri = cv2.arcLength(c, True)
-        approx = cv2.approxPolyDP(c, 0.005* peri, True)
-        if len(approx) == 4:
-            screenCnt = approx
-            break
-    cv2.drawContours(res, [screenCnt], -1, (0, 255, 0), 2)
+        listOfContourObject.append(Box(c))
+
+    distanceFromCentre = []
+    for box in listOfContourObject:
+        boxCentre = box.getCentre()
+
+        distance = math.sqrt((boxCentre[0]-centerOfPaper[0])**2 + (boxCentre[1]-centerOfPaper[1])**2 )
+        print(type(distance))
+        distanceFromCentre.append((distance,box,box.getArea()))
+
+    distanceFromCentre.sort()
+
+    # to get the area of the answer box.
+    answerSheet.findBoxArea(distanceFromCentre)
+    # to determine the box which is answer box
+    answerSheet.findAnswerBox(listOfContourObject)
+    # find length and height of the box
+    answerSheet.findLengthAndHeight()
+
+    answerSheet.drawAnswerBox(gray)
+
+    # 目前到这里，大部分的答题框已经找到了，然后需要找剩下的答题框，以及开始判题
+    # 我原本的思路是把纸张分成三大列，然后每大列里面根据格子之间的差值找到剩下的格子。这个过程比较繁琐
+    # 所以我暂时也没想好怎么办
+
+
+
+
+
+    '''
+
+
+
+    centre_list = find_centre(cnts_rect)
+
+    # print "this length of centre_list is ", len(centre_list)
+
+    centre_list_col = sorted(centre_list, key=lambda point: point[1])
+
+    # answer_list is a list. It contains x elements, x is rows of the answer sheet. It is also list
+    # every row_list contains also list which are centre points of rectangle.
+    # answer_list = find_missing_rectangle(centre_list, centre_list_col, length // 2, height // 2)
+
+
+    answer_list = find_missing_rectangle_stronger(image, centre_list, centre_list_col, length // 2, height // 2,
+                                                  image_width)
+    answer_list = sorted(answer_list, key=lambda point: point[1])
+
+    print("yea")
+
+
+
+
+
+
+
+
 
     # ===================================================================================
     # test for upload in front end.
     # ===================================================================================
-    # cv2.imshow("Contours",res)
+    cv2.imshow("Contours",res)
     # cv2.imwrite("res2.png", res)
+    cv2.waitKey()
 
-    #warped = four_point_transform(res, screenCnt.reshape(4, 2) * ratio)
+    # warped = four_point_transform(res, screenCnt.reshape(4, 2) * ratio)
     lel = rectify(screenCnt)
-    pts2 = np.float32([[0,0],[840,0],[840,1164],[0,1164]])
-    M = cv2.getPerspectiveTransform(lel,pts2)
-    dst = cv2.warpPerspective(res,M,(840,1164))
-    crop_img = dst[440:945,130:700]
-    #dst = cv2.resize(dst, (1050, 1455)) 
-    cv2.imshow("Warped",dst)
+    pts2 = np.float32([[0, 0], [840, 0], [840, 1164], [0, 1164]])
+    M = cv2.getPerspectiveTransform(lel, pts2)
+    dst = cv2.warpPerspective(res, M, (840, 1164))
+    crop_img = dst[440:945, 130:700]
+    # dst = cv2.resize(dst, (1050, 1455))
+    cv2.imshow("Warped", dst)
     cv2.imwrite("original.png", image)
+    cv2.waitKey(15000)
 
-    #print len(screenCnt)
+    # print len(screenCnt)
     # convert the warped image to grayscale, then threshold it
     # to give it that 'black and white' paper effect
-    gray2=cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("Answer area",gray2)
-    #blur = cv2.GaussianBlur(gray2,(5,5),0)
-    #th3 = cv2.adaptiveThreshold(gray2,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
-    #thresh1=cv2.adaptiveThreshold(gray2,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
-    #cv2.imshow("Stetched",thresh1)
-    #blur = cv2.GaussianBlur(gray2,(5,5),0)
-    #ret3,th3 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    cv2.imshow("Answer area",crop_img)
-    cv2.waitKey(15000)
+    gray2 = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("Answer area", gray2)
+    # blur = cv2.GaussianBlur(gray2,(5,5),0)
+    # th3 = cv2.adaptiveThreshold(gray2,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+    # thresh1=cv2.adaptiveThreshold(gray2,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+    # cv2.imshow("Stetched",thresh1)
+    # blur = cv2.GaussianBlur(gray2,(5,5),0)
+    # ret3,th3 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    cv2.imshow("Answer area", crop_img)
+    # cv2.waitKey(15000)
     image = crop_img
 
     # above is created by Huiming
 
-    name = "static/upload/" + image1
-    image = cv2.imread(name)
-    f = open(answer_file_name)
-    correct_answer = f.read()
+    # comment for test
+    # ========================
+    # name = "static/upload/" + image1
+    # image = cv2.imread(name)
+    # f = open(answer_file_name)
+    # correct_answer = f.read()
 
-    image = cv2.resize(image,None,fx=2, fy=2, interpolation = cv2.INTER_LANCZOS4)
+    # image = cv2.resize(image,None,fx=2, fy=2, interpolation = cv2.INTER_LANCZOS4)
 
-    image_height, image_width = image.shape[:2]
+    # image_height, image_width = image.shape[:2]
 
 
     # ratio = 1000.0 / image.shape[1]
@@ -580,7 +637,7 @@ def grading(image1, answer_file_name):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # blur the image slightly to remove noise.
     # gray = cv2.bilateralFilter(gray, 11, 17, 17)
-    gray = cv2.GaussianBlur(gray, (5, 5), 0) #is an alternative way to blur the image
+    gray = cv2.GaussianBlur(gray, (5, 5), 0)  # is an alternative way to blur the image
     # canny edge detection
     edged = cv2.Canny(gray, 30, 200)
     # two threshold method.
@@ -635,7 +692,7 @@ def grading(image1, answer_file_name):
         if len(approx) == 4 and cv2.contourArea(c) > 2500:
             screenCnt = approx
             cnts_rect.append(approx)
-        # print "this is coutour area ", cv2.contourArea(c)
+            # print "this is coutour area ", cv2.contourArea(c)
 
     # the print is for test
     # print screenCnt[0][0]
@@ -680,7 +737,8 @@ def grading(image1, answer_file_name):
     # answer_list = find_missing_rectangle(centre_list, centre_list_col, length // 2, height // 2)
 
 
-    answer_list = find_missing_rectangle_stronger(image,centre_list, centre_list_col, length // 2, height // 2, image_width)
+    answer_list = find_missing_rectangle_stronger(image, centre_list, centre_list_col, length // 2, height // 2,
+                                                  image_width)
     answer_list = sorted(answer_list, key=lambda point: point[1])
 
     # ============================================================
@@ -696,26 +754,22 @@ def grading(image1, answer_file_name):
     # ============================================================
     # end test
     # ============================================================
-    answer_list = seperate_by_row(answer_list,height//2)
-
-
-    
-
+    answer_list = seperate_by_row(answer_list, height // 2)
 
     number_of_choice = 4
-    answer = find_answer2(answer_list,number_of_choice,thresh1,pixel=40,number_of_question=40)
+    answer = find_answer2(answer_list, number_of_choice, thresh1, pixel=40, number_of_question=40)
 
-    answer = change_num_into_choice(answer,number_of_choice)
+    answer = change_num_into_choice(answer, number_of_choice)
     # print "length is " ,len(answer)
     # print answer
 
 
-    result = grade_answer(correct_answer,answer)
+    result = grade_answer(correct_answer, answer)
     # print result
-    return result 
-    '''
-
+    return result
     
+
+
 
     # i = 0
     # print len(centre_list_col)
@@ -756,28 +810,31 @@ def grading(image1, answer_file_name):
     cv2.imwrite('messigray.png', image)
     '''
 
+
 if __name__ == '__main__':
-    reload(sys)
-    sys.setdefaultencoding("UTF8")
+    # reload(sys)
+    # sys.setdefaultencoding("UTF8")
 
     try:
         import tkFileDialog as tfd
     except ImportError:
         from tkinter import filedialog as tfd
 
+    # root = tkinter.Tk()
+    # root.withdraw()
+    # print("Please upload answer")
+    # answer_file = tfd.askopenfilename()
 
-    root = Tkinter.Tk()
-    root.withdraw()
-    print "Please upload answer"
-    answer_file = tfd.askopenfilename()
+    # print("Please upload answer sheet")
+    # image_file = tfd.askopenfilename()
 
-    print "Please upload answer sheet"
-    image_file = tfd.askopenfilename()
     # print filename
     # folder = os.getcwd()
     # image_file = folder + '/static/upload/answer.txt'
     # f = open(folder + '/static/upload/answer.txt','w')    image_file = "wrap.png"
     # answer_file = "answer.txt"
+    answer_file = "static/upload/answer.txt"
+    image_file = "static/upload/wrap.png"
 
     answer = grading(image_file, answer_file)
     # print "This is the output of the main function ", answer
