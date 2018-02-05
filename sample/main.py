@@ -515,7 +515,7 @@ def grading(image1, answer_file_name):
     except:
         (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:200]
+    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:200]    #cnts[i], i\in[0, 200)
 
     listOfContourObject = []
     for c in cnts:
