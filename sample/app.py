@@ -3,7 +3,7 @@ import os
 import sys
 
 # two file is created by developers
-from main import grading
+# from main import grading
 from flaskHelper import readAndSaveAnswerFile
 from flaskHelper import saveImage, writeAnswer
 
