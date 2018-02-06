@@ -118,5 +118,5 @@ class Grading(object):
 	    number_of_choice = 4
 	    answer = find_answer2(answer_list,number_of_choice,thresh1,pixel=40,number_of_question=40)
 
-	    print answer
+	    print(answer)
 

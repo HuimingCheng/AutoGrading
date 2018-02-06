@@ -338,10 +338,10 @@ def grade_answer(correct_answer,answer):
         if letter.isalpha()==True :
             temp += letter
     correct_answer = temp
-    print len(correct_answer)
-    print len(answer)
+    print(len(correct_answer))
+    print(len(answer))
     if len(correct_answer) != len(answer):
-        print "The number of answer is inconsistent with correct answer."
+        print("The number of answer is inconsistent with correct answer.")
         return None
     for i in range(len(answer)):
         temp = []
@@ -480,7 +480,7 @@ def grading(image1, answer_file_name):
 
 
     result = grade_answer(correct_answer,answer)
-    print result
+    print(result)
     return result 
 
    
@@ -527,7 +527,7 @@ if __name__ == '__main__':
     answer_file = raw_input("Please input the name of answer(text file) -> ")
 
     answer = grading(image, answer_file)
-    print "This is the output of the main function ", answer
+    print("This is the output of the main function ", answer)
 
 
 
