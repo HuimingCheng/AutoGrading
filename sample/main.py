@@ -509,13 +509,22 @@ def grading(image1, answer_file_name):
     # The first one is normal threshold method
     # The second one is use Gaussian method which has better effect.
     ret,thresh1 = cv2.threshold(gray,150,150,cv2.THRESH_BINARY)
+    thresh1=cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+    answerSheet.setThreshold(thresh1)
+    cv2.imwrite("this is thre.png", thresh1)
+    # cv2.waitKey(10000)
 
     try:
         (cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     except:
         (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:200]    #cnts[i], i\in[0, 200)
+    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:200]
+
+    # print(cnts)
+    # cv2.drawContours(image,cnts, -1, (0, 255, 0), 2)
+    # cv2.imwrite("Contours.png",image)
+
 
     listOfContourObject = []
     for c in cnts:
@@ -526,7 +535,6 @@ def grading(image1, answer_file_name):
         boxCentre = box.getCentre()
 
         distance = math.sqrt((boxCentre[0]-centerOfPaper[0])**2 + (boxCentre[1]-centerOfPaper[1])**2 )
-        print(type(distance))
         distanceFromCentre.append((distance,box,box.getArea()))
 
     distanceFromCentre.sort()
@@ -537,8 +545,10 @@ def grading(image1, answer_file_name):
     answerSheet.findAnswerBox(listOfContourObject)
     # find length and height of the box
     answerSheet.findLengthAndHeight()
+    answerSheet.findDistanceBetweenAnswerBoxAndNumberOfChoice()
+    answerSheet.locateQuestion()
 
-    answerSheet.drawAnswerBox(gray)
+    answerSheet.drawAnswerBox(image)
 
     # 目前到这里，大部分的答题框已经找到了，然后需要找剩下的答题框，以及开始判题
     # 我原本的思路是把纸张分成三大列，然后每大列里面根据格子之间的差值找到剩下的格子。这个过程比较繁琐
