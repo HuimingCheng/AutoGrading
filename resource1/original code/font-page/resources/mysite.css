@@ -7,7 +7,7 @@ body {
 
 .header{
   display: block;
-  height: 20%;
+  height: 10%;
   background-color: #333;
 }
 
@@ -15,7 +15,7 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  margin-left: 15%;
+  margin-left: 10%;
   overflow: hidden;
 
 }
@@ -25,9 +25,9 @@ body {
 li a {
     display: block;
     color: white;
-    font-size: 30px;
+    font-size: 15px;
     text-align: center;
-    padding: 30px 25px;
+    padding: 15px 15px;
     text-decoration: none;
 }
 
