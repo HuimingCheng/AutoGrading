@@ -28,3 +28,4 @@ class Box(object):
 
     def getArea(self):
         return self.area
+
