@@ -17,6 +17,12 @@ from flask_dropzone import Dropzone
 
 
 app = Flask(__name__)
+
+# to config upload file
+app.wsgi_app = app.wsgi_app
+app.config['SECRET_KEY'] = "Hubert"
+UPLOAD_FOLDER = "static/upload/unclassify"
+
 dropzone = Dropzone(app)
 
 app.config.update(
@@ -91,10 +97,19 @@ def grade():
         new_answer.append(answer.split('\t'))
     return render_template('show_result.html',items=new_answer)
 
+@app.route('/auto_upload', methods=['post'])
+def myupload():
+    myFile = request.files['file']
+    myFile.save(os.path.join(UPLOAD_FOLDER, myFile.filename))
+    return "ok"
+
+
+
+
 if __name__ == '__main__':
     print(os.path.realpath(__file__))
     print(os.path.dirname(os.path.realpath(__file__)))
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True )
 
 
 
