@@ -23,6 +23,9 @@ class ViewController:   UIViewController,
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func takePhoto(_ sender: Any) {
+        performSegue(withIdentifier: "showPhoto_Segue", sender: nil)
+    }
     @IBAction func showAlert() {
         let alert = UIAlertController(title: "Welcome to Autograding",
                                       message: "Created by Ruijie",

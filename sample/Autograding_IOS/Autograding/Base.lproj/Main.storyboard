@@ -18,9 +18,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2Z-P2-ZTF">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2Z-P2-ZTF">
                                 <rect key="frame" x="103" y="295" width="169" height="76"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="76" id="Qj1-Ea-YhY"/>
+                                    <constraint firstAttribute="width" constant="169" id="a2W-4D-eCC"/>
+                                </constraints>
                                 <state key="normal" title="Please hit me"/>
                                 <connections>
                                     <action selector="showAlert" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hpp-92-e0d"/>
@@ -40,20 +43,81 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="openCameraButtonWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="e4F-PU-Ub3"/>
+                                    <action selector="takePhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5zu-Z1-4rJ"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="hN4-Ub-4d9" firstAttribute="top" secondItem="g2Z-P2-ZTF" secondAttribute="bottom" constant="216" id="GV5-pp-jlp"/>
+                            <constraint firstItem="g2Z-P2-ZTF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="103" id="Hgv-AF-oXZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="g2Z-P2-ZTF" secondAttribute="trailing" constant="103" id="Hpq-mz-3Zh"/>
+                            <constraint firstItem="g2Z-P2-ZTF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="275" id="PKv-4F-Mq5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hN4-Ub-4d9" secondAttribute="bottom" constant="20" id="e82-hb-H6a"/>
                             <constraint firstItem="hN4-Ub-4d9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="snf-UA-KDt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <segue destination="xod-Pk-mP2" kind="presentation" identifier="showPhoto_Segue" id="WPQ-SQ-teP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="37.600000000000001" y="33.733133433283363"/>
+        </scene>
+        <!--Preview View Controller-->
+        <scene sceneID="0QG-jp-I83">
+            <objects>
+                <viewController id="xod-Pk-mP2" customClass="PreviewViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="E7C-CR-wZg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pno-BG-i6W">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZHh-Fu-ke9">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IvJ-cP-2Mj">
+                                        <rect key="frame" x="8" y="25" width="48" height="30"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GDE-ep-Foc">
+                                        <rect key="frame" x="327" y="25" width="34" height="30"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="26H-B2-9np"/>
+                                    <constraint firstItem="IvJ-cP-2Mj" firstAttribute="top" secondItem="ZHh-Fu-ke9" secondAttribute="top" constant="25" id="3bK-Gu-V6s"/>
+                                    <constraint firstAttribute="bottom" secondItem="IvJ-cP-2Mj" secondAttribute="bottom" constant="25" id="Pcq-m0-cVX"/>
+                                    <constraint firstAttribute="bottom" secondItem="GDE-ep-Foc" secondAttribute="bottom" constant="25" id="SJg-Uc-BFg"/>
+                                    <constraint firstAttribute="trailing" secondItem="GDE-ep-Foc" secondAttribute="trailing" constant="14" id="T7f-5c-eFz"/>
+                                    <constraint firstItem="GDE-ep-Foc" firstAttribute="top" secondItem="ZHh-Fu-ke9" secondAttribute="top" constant="25" id="rku-83-xxd"/>
+                                    <constraint firstItem="IvJ-cP-2Mj" firstAttribute="leading" secondItem="ZHh-Fu-ke9" secondAttribute="leading" constant="8" id="y1u-Xr-GFh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ZHh-Fu-ke9" firstAttribute="trailing" secondItem="Vl2-Yj-Tcf" secondAttribute="trailing" id="02R-7A-iOm"/>
+                            <constraint firstItem="ZHh-Fu-ke9" firstAttribute="top" secondItem="E7C-CR-wZg" secondAttribute="top" id="1Dw-x2-qkX"/>
+                            <constraint firstItem="ZHh-Fu-ke9" firstAttribute="leading" secondItem="Vl2-Yj-Tcf" secondAttribute="leading" id="eyH-fz-No9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Vl2-Yj-Tcf"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b17-38-f5L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1231" y="60"/>
         </scene>
     </scenes>
 </document>

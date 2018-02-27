@@ -532,6 +532,13 @@ def grading(image1, answer_file_name):
 
     cv2.imwrite('messigray.png', image)
     '''
+    
+def this_is_also_test():
+    pass
+
+# test for different comment
+def test1():
+    pass
 
 if __name__ == '__main__':
     image_file = "wrap.png"
