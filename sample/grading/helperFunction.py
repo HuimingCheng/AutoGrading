@@ -13,10 +13,10 @@ def readAndSaveAnswerFile(file):
     # here we have problem that the f.filename is unicode char. If there is Chinese inside filename
     # we need to encode this unicode into ascii and ignore or replace Chinese word
     #filename = filename.encode('ascii','ignore')
-        
+
     content = file.readline().strip()
     date = content.split('/')
-    
+
     content = file.readline().strip()
     folder = os.getcwd()
     f = open(folder + '/static/upload/answer.txt','w')
