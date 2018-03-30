@@ -18,7 +18,45 @@ from multiprocessing import Process, Pool
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, PasswordField
 from wtforms.validators import DataRequired
+import mysql.connector
 
+# ==================================================
+# test for connect pythonanywhere
+import mysql.connector
+import sshtunnel
+from mysql.connector.cursor import MySQLCursor
+
+def connectDatabase(username, password):
+    sshtunnel.SSH_TIMEOUT = 5.0
+    sshtunnel.TUNNEL_TIMEOUT = 5.0
+
+    with sshtunnel.SSHTunnelForwarder(
+        ('ssh.pythonanywhere.com'),
+        ssh_username='Gengruijie', ssh_password='Grj12345',
+        remote_bind_address=('Gengruijie.mysql.pythonanywhere-services.com', 3306)
+    ) as tunnel:
+        connection = mysql.connector.connect(
+            user='Gengruijie', password='GRJ12345',
+            host='127.0.0.1', port=tunnel.local_bind_port,
+            database='Gengruijie$AutoGrading',
+        )
+        # Do stuff
+        query = "SELECT password, level, score from main where name = \"" + username + "\""
+        # print(query)
+        # cur = connection.cursor(buffered=True)
+        cursor = MySQLCursor(connection)
+        cursor.execute(query)
+        data = cursor.fetchall()
+        # print(data, password)
+        if data[0][0] != password:
+            return (False,1,1)
+        return (True, data)
+
+# end test.
+# ==================================================
+
+# global variable:
+loginUsers = []
 
 # 定义的表单都需要继承自FlaskForm
 class LoginForm(FlaskForm):
@@ -41,6 +79,13 @@ class MyThread(threading.Thread):
 
 
 app = Flask(__name__)
+
+conn = mysql.connector.connect(
+    user="root",
+    password="gengruijie",
+    host="127.0.0.1",
+    database="Lemma"
+)
 
 # to config upload file
 app.wsgi_app = app.wsgi_app
@@ -68,8 +113,24 @@ def login():
 
     form = LoginForm()
     if request.method == "POST":
-        print(11231231)
+        # print(11231231)
+        user = request.form.get("username")
+        password = request.form.get("password")
+        data = connectDatabase(user, password)
+        if (  data[0] == False ):
+            return render_template('index.html')
+        global loginUsers
+        loginUsers.append((user, data))
+        # print(loginUsers)
+        return render_template('indexUser.html')
     return render_template('login.html', title="Sign In", form=form)
+
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+    global loginUsers
+    # print("I am run here")
+    loginUsers= []
+    return render_template('index.html')
 
 
 '''
@@ -90,7 +151,7 @@ def upload_sheet():
         saveImage(f)
         # answer = grading(f.filename,"answer.txt")
         # writeAnswer(answer)
-        print("this is upload_sheet")
+        # print("this is upload_sheet")
     return render_template('index.html')
 
 @app.route('/grading', methods=['POST', 'GET'])
@@ -137,11 +198,80 @@ def myupload():
     myFile.save(os.path.join(UPLOAD_FOLDER, myFile.filename))
     return "ok"
 
+@app.route('/Scores', methods=['GET'])
+def Scores():
+    global loginUsers
+    username = loginUsers[0][0]
+
+    sshtunnel.SSH_TIMEOUT = 5.0
+    sshtunnel.TUNNEL_TIMEOUT = 5.0
+
+    with sshtunnel.SSHTunnelForwarder(
+        ('ssh.pythonanywhere.com'),
+        ssh_username='Gengruijie', ssh_password='Grj12345',
+        remote_bind_address=('Gengruijie.mysql.pythonanywhere-services.com', 3306)
+    ) as tunnel:
+        connection = mysql.connector.connect(
+            user='Gengruijie', password='GRJ12345',
+            host='127.0.0.1', port=tunnel.local_bind_port,
+            database='Gengruijie$AutoGrading',
+        )
+        # Do stuff
+        query = "SELECT level, score from main where name = \"" + username + "\""
+        # print(query)
+        # cur = connection.cursor(buffered=True)
+        cursor = MySQLCursor(connection)
+        cursor.execute(query)
+        data1 = cursor.fetchall()
+
+    # print(username)
+
+    if data1[0][0] == "student":
+        return render_template('Scores.html', name=username,score =data1[0][1] )
+    else :
+        sshtunnel.SSH_TIMEOUT = 5.0
+        sshtunnel.TUNNEL_TIMEOUT = 5.0
+
+        with sshtunnel.SSHTunnelForwarder(
+                ('ssh.pythonanywhere.com'),
+                ssh_username='Gengruijie', ssh_password='Grj12345',
+                remote_bind_address=('Gengruijie.mysql.pythonanywhere-services.com', 3306)
+        ) as tunnel:
+            connection = mysql.connector.connect(
+                user='Gengruijie', password='GRJ12345',
+                host='127.0.0.1', port=tunnel.local_bind_port,
+                database='Gengruijie$AutoGrading',
+            )
+            # Do stuff
+            query = "SELECT name, score from main"
+            # print(query)
+            # cur = connection.cursor(buffered=True)
+            cursor = MySQLCursor(connection)
+            cursor.execute(query)
+            data = cursor.fetchall()
+        # print(data)
+        result = []
+        for element in data :
+            if element[1] != "":
+                if element[0] == "Turner":
+                    continue
+                result.append((element[0],element[1]))
+        return render_template('ScoresProfessor.html', name=username,items =result )
+
+
+
+
+
+
 def flaskRun():
     # print(os.path.realpath(__file__))
     # print(os.path.dirname(os.path.realpath(__file__)))
 
     app.run(host='0.0.0.0', debug=True )
+
+
+
+
 
 
 
