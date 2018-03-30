@@ -1,0 +1,3 @@
+/Users/gengruijie/Desktop/未命名文件夹/OneDrive/学习/cs/课外/Github/AutoGrading/resource1/original code/hand_writing_recognization/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/gengruijie/Desktop/未命名文件夹/OneDrive/学习/cs/课外/Github/AutoGrading/resource1/original code/hand_writing_recognization/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/gengruijie/Desktop/未命名文件夹/OneDrive/学习/cs/课外/Github/AutoGrading/resource1/original code/hand_writing_recognization/cmake-build-debug/CMakeFiles/hand_writing_recognization.dir

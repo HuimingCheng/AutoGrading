@@ -10,6 +10,7 @@ body {
   display: block;
   height: 10%;
   background-color: #333;
+
 }
 
 .head{
@@ -17,6 +18,8 @@ body {
   margin: 0;
   padding: 0;
   margin-left: 10%;
+    margin-right: 10%;
+
   overflow: hidden;
 
 }
@@ -80,3 +83,16 @@ h3{
     margin-left: auto;
     margin-right: auto;
 }
+
+.login1{
+    float: right;
+}
+
+/*.containerProfessor{*/
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*height: 80%;*/
+    /*text-align:center;*/
+    /*display: flex;*/
+    /*align-items: center;*/
+/*}*/
