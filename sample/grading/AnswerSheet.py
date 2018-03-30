@@ -1,4 +1,4 @@
-from Box import Box
+from sample.grading.Box import Box
 import cv2
 import sys
 import numpy as np
@@ -8,6 +8,7 @@ class AnswerSheet(object):
         self.centre = myCentre
         self.answerArea = myAnswerArea
         self.answerBox = []
+        self.answer = []
         self.height = 0.0
         self.length = 0.0
         self.difference = 0
@@ -18,6 +19,7 @@ class AnswerSheet(object):
         self.ydifference = 0
         self.thresholdImage = np.array(0)
         self.totalLine = 0
+
 
 
     def setCentre(self,myCentre):
@@ -38,6 +40,10 @@ class AnswerSheet(object):
     def getAnswerBox(self):
         return self.answerBox
 
+    def getAnswer(self):
+        return self.answer
+
+
     def findAnswerBox(self,allBox):
         delta = self.answerArea * 0.125
         for box in allBox:
@@ -53,7 +59,7 @@ class AnswerSheet(object):
         # cv2.imshow("test", image)
         # cv2.waitKey(20000)
 
-        cv2.imwrite("this is res1.png", res)
+        # cv2.imwrite("this is res1.png", res)
 
     # find the length and height of one answer box.
     def findLengthAndHeight(self):
@@ -132,6 +138,7 @@ class AnswerSheet(object):
             sys.exit(1)
 
         for oneLine in list_of_one_line:
+            oneLine.sort()
             if len(oneLine) == number:
                 self.xlittleDIfference = oneLine[1][0] - oneLine[0][0]
                 choice = self.numberOfChoice
@@ -220,11 +227,19 @@ class AnswerSheet(object):
 
             for x in range(int(x_start), int(x_end)):
                 for y in range(int(y_start), int(y_end)):
+                    # x, y for high qualit
+                    # y,x for low quality
                     px += self.thresholdImage[y, x]
             list_of_px.append(px)
-        print(list_of_px)
 
-        return list_of_px.index(min(list_of_px))
+        if list_of_px.index(min(list_of_px)) == 0:
+            return 'A'
+        if list_of_px.index(min(list_of_px)) == 1:
+            return 'B'
+        if list_of_px.index(min(list_of_px)) == 2:
+            return 'C'
+        if list_of_px.index(min(list_of_px)) == 3:
+            return 'D'
 
 
 
@@ -266,8 +281,12 @@ class AnswerSheet(object):
                 # cv2.imwrite("this is thre.png", self.thresholdImage)
                 x_base_original, y_base_original = x_base, y_base
 
-
+        self.answer = answer
         print()
+
+
+
+
 
 
     def someUsefulFunction(self):

@@ -4,7 +4,9 @@ import sys
 import os
 import time
 import platform
-
+import mysql.connector
+import sshtunnel
+from mysql.connector.cursor import MySQLCursor
 
 
 # the type file is <FileStorage: u'answer.txt' ('text/plain')>
@@ -101,5 +103,55 @@ def FileMoniter():
             print('Current Files:', newfile)
             time.sleep(5)
             allfile = newfile
+
+
+def getNameFromDatabse():
+    sshtunnel.SSH_TIMEOUT = 300.0
+    sshtunnel.TUNNEL_TIMEOUT = 300.0
+    with sshtunnel.SSHTunnelForwarder(
+            ('ssh.pythonanywhere.com'),
+            ssh_username='Gengruijie', ssh_password='Grj12345',
+            remote_bind_address=('Gengruijie.mysql.pythonanywhere-services.com', 3306)
+    ) as tunnel:
+        connection = mysql.connector.connect(
+            user='Gengruijie', password='GRJ12345',
+            host='127.0.0.1', port=tunnel.local_bind_port,
+            database='Gengruijie$AutoGrading',
+        )
+        query = "SELECT name from main"
+        cursor = MySQLCursor(connection)
+        cursor.execute(query)
+        names = cursor.fetchall()
+
+    print("Begin to grade answer sheet")
+    temp = []
+    for name in names:
+        temp.append(name[0])
+    return temp
+
+def updateScore(score, searchName):
+    sshtunnel.SSH_TIMEOUT = 300.0
+    sshtunnel.TUNNEL_TIMEOUT = 300.0
+    with sshtunnel.SSHTunnelForwarder(
+            ('ssh.pythonanywhere.com'),
+            ssh_username='Gengruijie', ssh_password='Grj12345',
+            remote_bind_address=('Gengruijie.mysql.pythonanywhere-services.com', 3306)
+    ) as tunnel:
+        connection = mysql.connector.connect(
+            user='Gengruijie', password='GRJ12345',
+            host='127.0.0.1', port=tunnel.local_bind_port,
+            database='Gengruijie$AutoGrading',
+        )
+        query = "update main set score =\" " + score + "\" where name=\"" + searchName + "\""
+        cursor = MySQLCursor(connection)
+        cursor.execute(query)
+        connection.commit()
+
+def usefulMethod():
+    # print(edged.shape[:2])
+    # cv2.imwrite("this is xxxx.png", image)
+    # cv2.drawContours(im, contours, -1, (0, 0, 255),1)
+
+    pass
 
 

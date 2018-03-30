@@ -28,7 +28,7 @@ def get_FileCreateTime(filePath):
 
 
 def upload(fileName):
-    url = "http://129.161.41.95:5000/auto_upload"
+    url = "http://23.114.168.127/auto_upload"
     file = open(fileName, 'rb')
     files = {'file': file}
     response = requests.post(url, files=files)
@@ -89,8 +89,11 @@ def moniter():
         os.mkdir('Uploaded')
 
 
+    # correct version
+    # allfile = os.listdir(path)
 
-    allfile = os.listdir(path)
+    # this is for test.
+    allfile = ['.DS_Store', '__init__.py', 'Uploaded', 'autoUpload.py']
     print('Current Files:', allfile)
     while 1:
         newfile = os.listdir(path)
