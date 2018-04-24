@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>Login Page</title>
+{% endblock %}
+
+{% block body %}
+    <div class="loginDiv">
+
+        {# To do we need to move them into css.  #}
+        <form action="{{ url_for("login") }}" method="POST", style="width:100%; text-align:center; margin:auto; ">
+            <p>
+                User Name:<br>
+                <input type="text" name="username" /><br>
+            </p>
+            <p>
+                Password:</br>
+                <input type="password" name="password" /><br>
+            </p>
+            <p><input type="submit" value="Sign In"></p>
+            <p>
+                <input type="checkbox" name="remember_me"/>Remember Me
+            </p>
+
+                {{ form.csrf_token }}
+        </form>
+    </div>
+{% endblock %}
+

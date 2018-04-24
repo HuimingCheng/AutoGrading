@@ -1,0 +1,35 @@
+{% extends "layoutUser.html" %}
+{% block body %}
+    <div class= "container">}
+        <div class="vertical-container">
+            <h3>Hello! Professor {{ name }}, the scores of your students:</h3>
+                    <div class="containerProfessor">
+        <table style="width:30%; text-align:center; margin:auto; ">
+              <tr>
+                <td>
+                    Student Name
+                </td>
+                <td>
+                    Score
+                </td>
+            </tr>
+
+            {% for item in items %}
+            <tr>
+                <td>
+                    {{item[0]}}
+                </td>
+                <td>
+                    {{item[1]}}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+

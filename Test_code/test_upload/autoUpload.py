@@ -11,6 +11,8 @@ import atexit
 
 global FILENUMBER
 
+
+
 # print the number of files uplaod in this time, and give a reminder for user that the
 # the file will be deleted after Monday before exit the script.
 
@@ -28,7 +30,7 @@ def get_FileCreateTime(filePath):
 
 
 def upload(fileName):
-    url = "http://129.161.41.95:5000/auto_upload"
+    url = "http://129.161.208.75:5000/auto_upload"
     file = open(fileName, 'rb')
     files = {'file': file}
     response = requests.post(url, files=files)

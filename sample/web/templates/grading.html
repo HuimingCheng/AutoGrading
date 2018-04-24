@@ -1,0 +1,197 @@
+{% extends "layout.html" %}
+    {% block head %}
+        {{ dropzone.load() }}
+        {{ dropzone.style('border: 2px dashed #0087F7;  width:100%; margin:auto text-align:center; min-height: 300px;') }}
+    {% endblock %}
+
+    {% block body %}
+        <div class="logo">
+          <div class="logo_background">
+            </span>
+            <!-- <img src= "{{url_for('static', filename = 'background.jpg')}}" > -->
+          </div>
+        </div>
+
+    <table method= "POST", style="width:100%; text-align:center; margin:auto; ">
+        <tr>
+            <td>
+                Answer
+            </td>
+            <td>
+                Student Answer sheet
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                {{ dropzone.create(action_view='upload_sheet') }}
+            </td>
+            <td>
+                {{ dropzone.create(action_view='upload_sheet') }}
+            </td>
+        </tr>
+    </table>
+    <button type="button">
+
+
+    <table style="width:100%; text-align:center; margin:auto; ">
+        {% for item in items %}
+            <tr>
+                <td>
+                    answer
+                    {{item[0]}}
+                </td>
+                <td>
+                    {{item[1]}}
+                </td>
+                <td>
+                    {{item[2]}}
+                </td>
+          </tr>
+      {% endfor %}
+    </table>
+
+    <form method="GET" action="/grade">
+        <input type="submit" value="Grade" onclick="return confirm('Please check whether you have upload answer for' +
+        'grading. If you want to select answer from your account, you can click ok to continue!')">
+    </form>
+
+
+
+    {% endblock %}
+
+
+
+
+
+
+
+{##}
+{##}
+{##}
+{##}
+{##}
+{#<html>#}
+{#  <head>#}
+{#    <title> Autograding System </title>#}
+{#    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">#}
+{#    {{ dropzone.load() }}#}
+{#    {{ dropzone.style('border: 2px dashed #0087F7;  width:100%; margin:auto text-align:center; min-height: 300px;') }}#}
+{##}
+{#      <style type="text/css">#}
+{#      body {#}
+{#        font-family: Arial, Helvetica, sans-serif;#}
+{#        padding: 0;#}
+{#        margin: 0;#}
+{#      }#}
+{#      center{#}
+{#        padding-top: 25px;#}
+{#      }#}
+{#      .logo{#}
+{#        margin-left: auto;#}
+{#        margin-right: auto;#}
+{#        height: 100px;#}
+{#        color #f9f9f9;#}
+{#        font-size: 40px;#}
+{#        font-weight: bold;#}
+{#        text-align: center;#}
+{##}
+{#      }#}
+{#      .logo_background {#}
+{#        background-image: url( {{ url_for('static', filename = 'images/background.jpg') }} ) ;#}
+{#        /*background-image: url('/Users/gengruijie/sample/contours.png') ;*/#}
+{##}
+{#        /*margin-top: 2%;*/#}
+{##}
+{#        /*background-image: url(background.jpg) */#}
+{#        /*<link rel="stylesheet" type="text/css" href="static/background.jpg">*/#}
+{##}
+{#        background-color: transparent;#}
+{#        width: 100%;#}
+{#        height: 100%;#}
+{#      }#}
+{#      .container{#}
+{#        position: absolute;#}
+{#        width: 100%;#}
+{#        height: 100%;#}
+{#        text-align:center;#}
+{#        display: flex;#}
+{#        align-items: center;#}
+{#      }#}
+{#/*      .file_text{#}
+{#        margin-left: 25%; #}
+{#      }#}
+{#      .file_img{#}
+{#        margin-right: 50%; #}
+{#      }#}
+{#      .file_info{#}
+{##}
+{#      }*/#}
+{#    </style>#}
+{#  </head>#}
+{##}
+{#  <body>#}
+{#    <div class="logo">#}
+{#      <div class="logo_background">#}
+{#          <center>Autograding System</center>#}
+{#        </span>#}
+        <!-- <img src= "{{url_for('static', filename = 'background.jpg')}}" > -->
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <table method= "POST", style="width:100%; text-align:center; margin:auto; ">#}
+{#      <tr>#}
+{#        <td>#}
+{#          Answer #}
+{#        </td>#}
+{#        <td>#}
+{#          Student Answer sheet#}
+{#        </td>#}
+{#      </tr>#}
+{##}
+{#      <tr>#}
+{#        <td>#}
+{#          {{ dropzone.create(action_view='upload_sheet') }}#}
+{#        </td>#}
+{#        <td>#}
+{#          {{ dropzone.create(action_view='upload_sheet') }}#}
+{#        </td>#}
+{#      </tr>#}
+{#    </table>#}
+{#    <button type="button">#}
+{##}
+{##}
+{#    <table style="width:100%; text-align:center; margin:auto; ">#}
+{#      {% for item in items %}#}
+{#      <tr>#}
+{#        <td>#}
+{#          answer#}
+{#          {{item[0]}} #}
+{#        </td>#}
+{#        <td>#}
+{#          {{item[1]}}#}
+{#        </td>#}
+{#        <td>#}
+{#          {{item[2]}}#}
+{#        </td>#}
+{#      </tr>#}
+{#      {% endfor %}#}
+{#    </table>#}
+{##}
+{#    <form method="GET" action="/grade">#}
+{#      <input type="submit" value="Grade" onclick="return confirm('Please check whether you have upload answer for' +#}
+{#       'grading. If you want to select answer from your account, you can click ok to continue!')">#}
+{#    </form>#}
+{##}
+{##}
+{##}
+{#  </body>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
