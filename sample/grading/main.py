@@ -120,7 +120,7 @@ def printTime(timeBegin):
 '''
 
 
-def grading(image1, answer_file_name):
+def grading(image1, answer_file_name,recog = True):
     # sshtunnel.SSH_TIMEOUT = 300.0
     # sshtunnel.TUNNEL_TIMEOUT = 300.0
     # with sshtunnel.SSHTunnelForwarder(
@@ -240,6 +240,9 @@ def grading(image1, answer_file_name):
     score = str(len(studentAnswer)-len(result)) +"/" +  str(len(studentAnswer))
     print("Finish to get the answer from sheet and file, and grade.")
     timeBegin = printTime(timeBegin)
+
+    if recog == False:
+        return score
 
 
     # =======================================================================================
