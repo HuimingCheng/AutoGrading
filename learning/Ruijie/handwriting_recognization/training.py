@@ -97,7 +97,7 @@ if __name__ == '__main__':
     # to remove some small contours which is enclosed in other big contours
     cnts = checkEnclosed(cnts)
 
-    print("After function", len(cnts))
+    print("After function, the number of cnts is ", len(cnts))
     mediumHeight = findMediumHeight(cnts)
     smallestWide = findSmallestWide(cnts)
 
@@ -150,16 +150,16 @@ if __name__ == '__main__':
                 sys.exit()
             elif key == 32: # this is invalid training sample determined by user.
                 continue
-            responses.append(chr(key))
+            responses.append(key)
             sample = roismall.reshape((1, 100))
             samples = np.append(samples, sample, 0)
 
-    # responses = np.array(responses, np.float32)
-    # responses = responses.reshape((responses.size, 1))
+    responses = np.array(responses, np.float32)
+    responses = responses.reshape((responses.size, 1))
     print("training complete")
 
-    np.savetxt("generalsamples.data", samples)
-    np.savetxt("generalresponses.data", responses)
+    np.savetxt("generalsamples.txt", samples)
+    np.savetxt("generalresponses.txt", responses)
 
             # cv2.drawContours(temp, [cnts[14]], -1, (0, 255, 0), 2)
     # cv2.imwrite("1111"+ ".png", crop_img)
