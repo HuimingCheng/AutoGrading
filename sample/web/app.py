@@ -26,6 +26,8 @@ import mysql.connector
 import sshtunnel
 from mysql.connector.cursor import MySQLCursor
 
+from flask_mail import Mail, Message
+
 def connectDatabase(username, password):
     sshtunnel.SSH_TIMEOUT = 5.0
     sshtunnel.TUNNEL_TIMEOUT = 5.0
@@ -78,7 +80,26 @@ class MyThread(threading.Thread):
 
 
 
+
+
+
+
 app = Flask(__name__)
+
+
+mail=Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'haotian666666@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Uwha090909'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
+
+
+
 
 conn = mysql.connector.connect(
     user="root",
@@ -107,6 +128,12 @@ app.config.update(
 def index():
     return render_template("index.html")
 
+@app.route("register", method=['POST','GET'])
+def register():
+   msg = Message('Hello', sender = 'haotian666666@gmail.com', recipients = ['651938023@qq.com'])
+   msg.body = "Hello Flask message sent from Flask-Mail"
+   mail.send(msg)
+   return "Sent"
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -282,17 +309,3 @@ if __name__ == '__main__':
     p = Pool(2)
     p.apply_async(flaskRun())
     print("Waiting for all subprocess done...")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
