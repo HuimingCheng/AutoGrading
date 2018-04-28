@@ -33,7 +33,6 @@ def saveImage(file):
     # we need to encode this unicode into ascii and ignore or replace Chinese word
     # filename = filename.encode('ascii','ignore')
     folder = os.getcwd()
-
     file.save(folder+"/static/upload/unclassify/"+filename)
 
 def writeAnswer(answer):

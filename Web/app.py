@@ -23,7 +23,7 @@ app.config.update(
 @app.route('/', methods=['POST', 'GET'])
 def function():
     if request.method == "POST":
-        #print 1
+        print(1)
 
         pass
     return render_template("index.html")
@@ -55,7 +55,7 @@ def upload_sheet():
     # for x in range(2):
     if request.method == 'POST':
         f = request.files.get('photo')
-        #print 1
+        print(1)
         # return render_template('index2.html')
         filename = f.filename
             # here we have problem that the f.filename is unicode char. If there is Chinese inside filename
@@ -81,7 +81,7 @@ def upload_sheet():
         # print "ERROR"
 @app.route('/result', methods=['POST', 'GET'])
 def result():
-    #print "Open result"
+    print("Open result")
     f = open("result.txt")
     f = f.read()
     f = f.strip()
