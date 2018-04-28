@@ -6,10 +6,24 @@ import os
 from flask import Flask, render_template, request
 from flask import url_for, redirect
 from flask_dropzone import Dropzone
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
 dropzone = Dropzone(app)
+
+
+mail=Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'haotian666666@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Uwha090909'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
+
 
 app.config.update(
     UPLOADED_PATH=os.getcwd() + '/upload',
