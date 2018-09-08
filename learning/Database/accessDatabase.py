@@ -1,1 +1,1 @@
-print
+print("hello wo  rld")
