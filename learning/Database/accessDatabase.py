@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
-print("  ")
+print("This is the first update")
+print("Hello World")
 conn = mysql.connector.connect(
     user="Ruijie",
     password="gengruijie123",
