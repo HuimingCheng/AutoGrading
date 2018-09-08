@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import errorcode
-
+print("  ")
 conn = mysql.connector.connect(
     user="Ruijie",
     password="gengruijie123",
