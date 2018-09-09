@@ -12,8 +12,6 @@ from pytesseract import image_to_string, image_to_boxes
 import os
 
 
-
-
 def findcoordinateOfName(path):
     image = cv2.imread(path)
     height, width  = image.shape[:2]
