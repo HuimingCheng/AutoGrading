@@ -32,20 +32,15 @@ cv2.waitKey(5000)
 center = (w / 2, h / 2)
  
 # rotate the image by 180 degrees
+# center: tuple of two int/float  180: rotation angle   1.0: ratio of original size.
+# matrix that can be used for rotating (and scaling) the image
+matrix = cv2.getRotationMatrix2D(center, 180, 1.0)
+# to rotate the image.
+rotated = cv2.warpAffine(image, matrix, (w, h))
+cv2.imshow("rotated", rotated)
+cv2.waitKey(5000)
 
-x_axis = sorted(x_axis)
-y_axis = sorted(y_axis)
-x_centre = int((x_axis[0] + x_axis[-1]) / 2)
-y_centre = int((y_axis[0] + y_axis[-1]) / 2)
-# print "The smallest x coordinate is",x_axis[0]
-# print "The smallest y coordinate is",y_axis[0]
-# print "The biggest x coordinate is",x_axis[-1]
-# print "The biggest y coordinate is",y_axis[-1]
-# print "The centre of this rectangle is (%d,%d)" %(x_centre, y_centre)
-if (check_include(centre_list, x_centre, y_centre)):
-    centre_list.append((x_centre, y_centre))
-# print "The centre of this rectangle is (%d,%d)" %(x_centre, y_centre)
-return centre_list
+
 
 # crop the image using array slices -- it's a NumPy array
 # from starty to endy(height) and from startx to endx(wide)
