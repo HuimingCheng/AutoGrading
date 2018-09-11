@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: uk_UA.UTF-8 -*-
 import os
 from main import grading
 

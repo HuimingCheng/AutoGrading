@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 #######   training part    ############### 
-samples = np.loadtxt('generalsamples.txt',np.float32)
-responses = np.loadtxt('generalresponses.txt',np.float32)
+samples = np.loadtxt('generalsamples123.data',np.float32)
+responses = np.loadtxt('generalresponses123.data',np.float32)
 responses = responses.reshape((responses.size,1))
 
 model = cv2.ml.KNearest_create()
@@ -11,8 +11,8 @@ model.train(samples, cv2.ml.ROW_SAMPLE, responses)
 
 ############################# testing part  #########################
 
-im = cv2.imread("WechatIMG452.jpeg")
-im = cv2.resize(im, None,fx = 0.4, fy = 0.4, interpolation = cv2.INTER_LINEAR)
+im = cv2.imread("IwQY6.png")
+im = cv2.resize(im, None,fx = 1, fy = 1, interpolation = cv2.INTER_LINEAR)
 out = np.zeros(im.shape,np.uint8)
 gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
 thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,6)

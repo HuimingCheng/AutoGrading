@@ -523,14 +523,15 @@ def grading(image1, answer_file_name):
     cv2.imwrite('messigray.png', image)
 
 if __name__ == '__main__':
-    image_file = raw_input("Please input the name of student answer sheet(image file) -> ")
-    answer_file = raw_input("Please input the name of answer(text file) -> ")
-
-    answer = grading(image, answer_file)
-    print("This is the output of the main function ", answer)
-
-
-
+    pass
+    # image_file = raw_input("Please input the name of student answer sheet(image file) -> ")
+    # answer_file = raw_input("Please input the name of answer(text file) -> ")
+    #
+    # answer = grading(image, answer_file)
+    # print("This is the output of the main function ", answer)
+    #
+    #
+    #
 
 
 

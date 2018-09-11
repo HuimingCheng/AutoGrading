@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import sys
 
+print()
+
 def rectify(h):
     h = h.reshape((4,2))
     hnew = np.zeros((4,2),dtype = np.float32)
@@ -462,7 +464,7 @@ def grade_answer(correct_answer,answer):
     # print len(correct_answer)
     # print len(answer)
     if len(correct_answer) != len(answer):
-        print "The number of answer is inconsistent with correct answer."
+        print("The number of answer is inconsistent with correct answer.")
         return None
     for i in range(len(answer)):
         temp = []
