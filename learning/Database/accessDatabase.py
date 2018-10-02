@@ -51,7 +51,7 @@ if __name__ == '__main__':
     ('Nunavut' ,26745 ,1925460.18),
     ]
 
-    #
+    #jlkjkljkljlkkl
     # for element in data:
     #     a = "INSERT INTO Density(province,population,land_area) VALUES('{:s}',{:d},{:0.2f});".format(element[0],element[1],element[2])
     #     print(a)

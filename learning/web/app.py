@@ -11,16 +11,15 @@ import sys
 import flask
 from flask import Flask, render_template, request
 from flask import url_for, redirect
-from flask_dropzone import Dropzone
+# from flask_dropzone import Dropzone
 import threading
 import time
 from multiprocessing import Process, Pool
 # for user login
-from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, PasswordField
-from wtforms.validators import DataRequired
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, BooleanField, PasswordField
+# from wtforms.validators import DataRequired
 import mysql.connector
-
 # connect database
 cnx = mysql.connector.connect(
     user="Ruijie",
