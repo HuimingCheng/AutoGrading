@@ -1,81 +1,42 @@
-#  AutoGrading
+# AutoGrading
+
+![](./logo/logo2.png)
 AutoGrading project for RCOS
+[project link on rcos.io](https://rcos.io/projects/huimingcheng/autograding/profile)
 
-# Built with
-Programming Language used: Python3, c++, html and css.
-Used Library: OpenCV
-Start date:September 15th
+## Technology Stack
 
+- Back end: python3, c++, MySql
+- Front end: html, css, markdown
 
-# Team member: 
-Huiming Cheng, Rujie Geng, Pengqin Wu, Yirong Cai,
-
-Ruizhen "Alex" Zhu, Zixiang Zhang, Hongrui Zhang, 
+- Useful external library(ies): OpenCV
 
 
-#  Project layout(TBD)
+## Team members
 
-### 1 - Picture upload
-- From cell phone   
-- From pc(.pdf, .jpg, ...)
-
-
-Related files : *.html; app.py; 
-
-### 2 - Find center of answer sheet
+Joined in September, 2017:
+Huiming Cheng, Rujie Geng, Pengqin Wu, Yirong Cai
 
 
-Related files : AnswerSheet.py;  
+Joined in Feburary, 2018:
+Alex Zhu, Zixiang Zhang, Hongrui Zhang, Haolun Zhang, Haotian Wu, Zhepeng Luo
 
-### 3 - Find all boxes/contours in answer sheet
+## Current status
 
+We finished the core functionalities of the project. Now we are working on making the code more robust, and being able to handle more general cases. We have been seeking improvments in these following directions:
 
-Related files : Box.py; AnswerSheet.py
+- Handwritting recognition.
+Some inputs are not neatly written and cause the grader to produce inaccurate results, or simply run into invalid states. To be more specific, we are working out an efficient way of splitting letters that are stuck together.
 
-### 4 - Find center of each box
+- More ways of accepting input.
+Currently, in the demos we only get input from a scanner - provides the grader with a clean and bright image. The team is striving to get the grader working with inputs from cell phone cameras. With this done the application will be able to be deployed on a server and allow users to access the grader remotely, and without looking up and down for a scanner. 
 
+- Documentation, code quality and design pattern.
+Despite the main part of the grading code is done, we still need to seek ways to improve the code by making it OOP and use design patterns to allow further extensions on functionalities. Apart from this, members are encouraged to put down comments and documentation about their own sections, making the code manageable.
 
-Related files : Box.py; AnswerSheet.py
+## Future Goals
 
-###  5 - Find area of boxes near center
-
-
-Related files : Box.py; AnswerSheet.py
-
-### 6 - Find area of answer box zone
-
-
-Related files : AnswerSheet.py
-
-### 7 - Find most of the answer boxes from contour list
-
-
-Related files : AnswerSheet.py
-
-### 8 - Find length, height of each answer box
-
-
-Related files : AnswerSheet.py
-
-### 9 - Find number of multiple choice options AND distance between answer boxes(same question && different questions)
-
-
-Related files : AnswerSheet.py
-   
-### 10- Find remaining answer boxes that are not in the list(if any)
-
-
-Related files : AnswerSheet.py
-
-### 11- Find center of each list of indexed boxes (1 list of boxes corresponds to 1 question)
-
-### 12- Convert image input into 2-D list
- data = list<Questions>;
- Questions = list<Boxes>;
- 
-### 13- Grading, find which boxes are marked
-
-
-### 14- Output results
-* in plain text
-* (also return a modified input with √ and × ?)
+- Scanner-Independent
+- Variable ways of accepting input
+- Deploying on web server
+- Modular, clean and low coupling code
