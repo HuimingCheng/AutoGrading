@@ -156,3 +156,5 @@ if __name__ == '__main__':
 
     np.savetxt(sample_output,samples)
     np.savetxt(response_output,responses)
+
+
