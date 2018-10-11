@@ -1,15 +1,29 @@
 # -*- coding: uk_UA.UTF-8 -*-
 import os
-from main import grading
+#from main import grading
 
 
 from flask import Flask, render_template, request
 from flask import url_for, redirect
 from flask_dropzone import Dropzone
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
 dropzone = Dropzone(app)
+
+
+mail=Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'haotian666666@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Uwha090909'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
+
 
 app.config.update(
     UPLOADED_PATH=os.getcwd() + '/upload',
@@ -63,7 +77,7 @@ def upload_sheet():
         filename = filename.encode('ascii','ignore')
         f.save(os.path.join(app.config['UPLOADED_PATH'], filename))
     # try:
-        answer = grading(filename,"answer.txt")
+        #answer = grading(filename,"answer.txt")
         f = open("result.txt", 'w')
         for x in answer:
             for y in x:
@@ -75,7 +89,7 @@ def upload_sheet():
     return render_template('index2.html')#,items = answer)
 
 
-    # print answer 
+    # print answer
 
     # except :
         # print "ERROR"
@@ -96,21 +110,3 @@ def result():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
