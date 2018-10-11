@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 
 #######   training part    ############### 
+
 samples = np.loadtxt('generalsample.txt',np.float32)
 responses = np.loadtxt('generalresponse.txt',np.float32)
 responses = responses.reshape((responses.size,1))
@@ -10,6 +11,7 @@ model = cv2.ml.KNearest_create()
 model.train(samples, cv2.ml.ROW_SAMPLE, responses)
 
 ############################# testing part  #########################
+
 
 im_name = input("Enter the name of the image to learn: ")
 

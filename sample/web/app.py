@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
 import os
 import sys
+
 
 # two file is created by developers
 # from main import grading
 # from helperFunction import readAndSaveAnswerFile
 from sample.web.helperFunction import saveImage, writeAnswer
 
+import flask
 from flask import Flask, render_template, request
 from flask import url_for, redirect
 from flask_dropzone import Dropzone
@@ -25,6 +26,7 @@ import mysql.connector
 import mysql.connector
 import sshtunnel
 from mysql.connector.cursor import MySQLCursor
+
 
 from flask_mail import Mail, Message
 
@@ -77,11 +79,6 @@ class MyThread(threading.Thread):
         print("{} started!".format(self.getName()))              # "Thread-x started!"
         time.sleep(1)                                      # Pretend to work for a second
         print("{} finished!".format(self.getName()))             # "Thread-x finished!"
-
-
-
-
-
 
 
 app = Flask(__name__)
@@ -224,6 +221,13 @@ def myupload():
     myFile = request.files['file']
     myFile.save(os.path.join(UPLOAD_FOLDER, myFile.filename))
     return "ok"
+
+
+@app.route('/register', methods=['GET'])
+def register():
+    return render_template('register.html')
+
+
 
 @app.route('/Scores', methods=['GET'])
 def Scores():
