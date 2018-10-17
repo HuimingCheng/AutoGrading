@@ -133,8 +133,8 @@ class Database(object):
         query = query.strip(",") + ") VALUES("
 
         for item in data:
-            if type(item[1]) == dict:
-                query = query + "\'" +  json.dumps(item[1]) + "\',"
+            if type(item[1]) == list:
+                query = query + "\' {} \',".format(item[1])
             else:
                 query += "{},".format(item[1])
         query = query.strip(",") + ");"
@@ -151,6 +151,12 @@ class Database(object):
         query = "select * from {}".format(queryTable)
         self.cursor.execute(query)
         return self.cursor.fetchall()
+
+    def queryColsData(self, querTable, cols):
+        query = "select {} from {}".format(', '.join(cols), querTable)
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
 
 
 if __name__ == '__main__':

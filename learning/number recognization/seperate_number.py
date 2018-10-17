@@ -16,6 +16,7 @@ from copy import *
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+from sample import database
 
 
 def create_key_image(key, row):
@@ -57,8 +58,15 @@ def add_answer(image, key_image, sample_image):
     image[y_offset:y_offset + key_image.shape[0], x_offset:x_offset + key_image.shape[1]] = sample_image
 
 
-    # y_offset = col
-    # image[y_offset:y_offset + key_image.shape[0], 0: key_image.shape[1]] = key_image
+def store_data(samples, responses, myDB):
+    db = database.database.Database("Ruijie", "gengruijie123", "142.93.59.116", myDB)
+    # db.drop_table("machine_learning")
+    # db.create_tables("machine_learning", [ ["id", "int NOT NULL AUTO_INCREMENT"], ["result", "int"], ["img", "JSON"] ], "id")
+    for i in range(len(samples)):
+        db.insert_data("machine_learning" ,[ [ "result", responses[i] ], ["img", list(samples[i]) ] ])
+
+
+# def redo(contours, count, ):
 
 
 
@@ -74,7 +82,15 @@ if __name__ == '__main__':
         sample_output = sys.argv[2]
         response_output = sys.argv[3]
 
+    db_name = "Student_grade"
+
     im = cv2.imread(img_name)
+    scale1 = 700 / im.shape[0]
+    # scale2 = 450 / img2.shape[0]
+    # print(scale1)
+    # print(img1.shape)
+
+    im = cv2.resize(im, (int(im.shape[1]*scale1), int(im.shape[0]*scale1)) )
     im_alies = im
     row, col = im.shape[0], im.shape[1]
     gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
@@ -89,6 +105,7 @@ if __name__ == '__main__':
 
     # Now finding Contours
     image,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    # print(len(contours))
 
     samples =  np.empty((0,100))
     responses = []
@@ -106,14 +123,20 @@ if __name__ == '__main__':
     # bincenters = 0.5 * (binEdges[1:] + binEdges[:-1])
     count = 0
 
-    for cnt in contours:
+    while count < len(contours):
+        cnt = contours[count]
+
+    # for cnt in contours:
         # print(cv2.contourArea(cnt))
         # if cv2.contourArea(cnt)>8 and cv2.contourArea(cnt)<3000:
 
         [x,y,w,h] = cv2.boundingRect(cnt)
+        if h<=10:
+            count+=1
+        # print(h)
             # print(cv2.contourArea(cnt))
             # print(h)
-        if  h>25:
+        if  h>10:
             cv2.rectangle(im, (x, y), (x + w, y + h), (0, 0, 255), 2)
             roi = thresh[y:y+h,x:x+w]
             roi2 = im_alies[y:y+h,x:x+w]
@@ -123,38 +146,68 @@ if __name__ == '__main__':
             roibig = cv2.cvtColor(roibig, cv2.COLOR_GRAY2RGB)
             cv2.imshow('norm',im)
             key = cv2.waitKey(0)
-            key_image = create_key_image( int(chr(key)), row)
-            add_answer(im, key_image,roibig )
-            print(key)
-            cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-            if key == 27:  # (escape to quit)
-                sys.exit()
+            # print(key)
 
             # blank space input. jump to next input
-            elif key == 32:
+            if key == 32:
+                cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                count += 1
                 continue
+            if key == 27:  # (escape to quit)
+                break
+
+            # redo
+            if key == 114:
+                print("redo.")
+                #[x, y, w, h] = cv2.boundingRect(contours[count])
+                cv2.rectangle(im, (x, y), (x + w, y + h), (255, 255, 255), 2)  # color(white) = retrive
+                responses.pop(-1)
+                count -= 1
+                [x, y, w, h] = cv2.boundingRect(contours[count])
+                cv2.rectangle(im, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                key = cv2.waitKey(0)
+                print(key)
+                key_image = create_key_image(int(chr(key)), row)
+                add_answer(im, key_image, roibig)
+                cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                responses.append(int(chr(key)))
+                count += 1
+                continue
+
 
             # up arrow
             elif key == 63232:
                 print("this is up")
+                continue
 
-            elif key in keys:
+            key_image = create_key_image( int(chr(key)), row)
+            add_answer(im, key_image,roibig )
+            # print(key)
+            cv2.rectangle(im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+
+            if key in keys:
+                count += 1
                 responses.append(int(chr(key)))
-                print(roismall.shape)
+                # print(roismall.shape)
 
                 # sample from 10*10 to 1*100
                 sample = roismall.reshape((1,100))
+                # print(samples)
                 # print(sample.shape)
-
+                # print(responses)
                 samples = np.append(samples,sample,0)
-                cv2.waitKey(0)
+                # cv2.waitKey(0)
 
-    responses = np.array(responses,np.float32)
-    responses = responses.reshape((responses.size,1))
-    print("training complete")
+    store_data(samples, responses, db_name)
 
-    np.savetxt(sample_output,samples)
-    np.savetxt(response_output,responses)
+
+    # sys.exit(1)
+    # responses = np.array(responses,np.float32)
+    # responses = responses.reshape((responses.size,1))
+    # print("training complete")
+    #
+    # np.savetxt(sample_output,samples)
+    # np.savetxt(response_output,responses)
 
 
